@@ -1,0 +1,27 @@
+apiVersion: serving.kserve.io/v1alpha1
+kind: ClusterServingRuntime
+metadata:
+  name: triton-trtllm
+spec:
+  annotations:
+    prometheus.kserve.io/path: /metrics
+    prometheus.kserve.io/port: "8002"
+  containers:
+  - args:
+    - tritonserver
+    - --model-store=/mnt/models # 容器内模型引擎地址，我可以换
+    - --grpc-port=9000
+    - --http-port=8080
+    - --allow-grpc=true
+    - --allow-http=true
+    image: nvcr.io/nvidia/tritonserver:24.05-trtllm-python-py3
+    name: kserve-container
+    resources:
+      limits:
+        nvidia.com/gpu: 8
+  protocolVersions:
+  - v2
+  - grpc-v2
+  supportedModelFormats:
+  - name: triton
+    version: "2"
