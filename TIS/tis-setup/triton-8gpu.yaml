@@ -1,0 +1,19 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: llama-3-8b
+  namespace: llama
+  annotations:
+    "sidecar.istio.io/inject": "true"
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: triton
+        version: "2"
+      runtime: triton-trtllm
+      storageUri: pvc://llm-data-pvc/
+      name: kserve-container
+      resources:
+        limits:
+          nvidia.com/v100: "8"
