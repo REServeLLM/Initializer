@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: model-store-pod
+  namespace: llama
+spec:
+  volumes:
+    - name: model-store
+      persistentVolumeClaim:
+        claimName: llm-data-pvc
+  containers:
+    - name: model-store
+      image: harbor.act.buaa.edu.cn/kserve/httpbin
+      command: [ "sleep" ]
+      args: [ "infinity" ]
+      volumeMounts:
+        - mountPath: "/mnt"
+          name: model-store
+      resources:
+        limits:
+          memory: "1Gi"
+          cpu: "1"
