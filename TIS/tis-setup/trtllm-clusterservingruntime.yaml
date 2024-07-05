@@ -14,7 +14,7 @@ spec:
     - --http-port=8080
     - --allow-grpc=true
     - --allow-http=true
-    image: harbor.act.buaa.edu.cn/nvidia/tritonserver:24.05-trtllm-python-py3
+    image: harbor.act.buaa.edu.cn/nvidia/tensorrt-llm:v0.10.0-release
     name: kserve-container
     resources:
       limits:
