@@ -14,7 +14,7 @@ spec:
     - --http-port=8080
     - --allow-grpc=true
     - --allow-http=true
-    image: harbor.act.buaa.edu.cn/nvidia/tensorrt-llm:v0.10.0-release
+    image: harbor.act.buaa.edu.cn/nvidia/reserve-llm:v20240708
     name: kserve-container
     resources:
       limits:
