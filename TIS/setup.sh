@@ -1,3 +1,3 @@
 #!/bin/bash
 
-kubectl apply -f tis-setup/trtllm-clusterservingruntime.yaml
+kubectl apply -f config/trtllm-clusterservingruntime.yaml
