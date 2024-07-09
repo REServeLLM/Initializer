@@ -15,7 +15,7 @@ TRITON_MAX_BATCH_SIZE=8
 OUTPUT_ENGINE_DIR=/workspace/engines
 
 # Prepare Configs
-cp $TIS_DIR/all_models/inflight_batcher_llm $TRITON_MODEL_REPO -r
+cp $TIS_DIR/all_models/inflight_batcher_llm/* $TRITON_MODEL_REPO -r
 
 python3 $TIS_DIR/tools/fill_template.py -i ${TRITON_MODEL_REPO}/preprocessing/config.pbtxt tokenizer_dir:$MODEL_REPO_DIR,triton_max_batch_size:${TRITON_MAX_BATCH_SIZE},preprocessing_instance_count:1
 python3 $TIS_DIR/tools/fill_template.py -i ${TRITON_MODEL_REPO}/postprocessing/config.pbtxt tokenizer_dir:$MODEL_REPO_DIR,triton_max_batch_size:${TRITON_MAX_BATCH_SIZE},postprocessing_instance_count:1
