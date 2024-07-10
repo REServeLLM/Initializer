@@ -13,6 +13,16 @@ Initializer for KServe Cluster with shell scripts and kubernetes YAML files.
 ## Project Structure
 - YAML: Contains the YAML files for deploying KServe, Triton Inference Server, and other Kubernetes resources.
 - Shell: Contains the scripts for running the installation and test operation.
+  - main.sh: calling convert_weight.sh, build_engine.sh, deploy_backend.sh, and test_serve.sh
+  - KServe/install.sh: installing KServe in Kubernetes.
+  - KServe/test_simple.sh: simple testing KServe's availability.
+  - TIS/install.sh: installing Triton Inference Server Backend in Kubernetes.
+  - TIS/run.sh: automatic execution at container startup.
+  - TIS/test_serve.sh: simply testing inference service's availability. 
+  - TRTLLM/upload_hf_model.sh: uploading huggingface weights to the PVC.
+  - TRTLLM/convert_weight.sh: converting huggingface weights to formated TensorRT-LLM weights.
+  - TRTLLM/build_engine.sh: building optimized TensorRT-LLM engines.
+  - TRTLLM/test_inference.sh: testing TensorRT-LLM engines' availability.
 
 ## Environment
 - Ubuntu: 22.04
@@ -74,7 +84,7 @@ docker run -it -d --network=host --runtime=nvidia \
 docker exec -it reserve /bin/bash
 ```
 
-4. Copy the REServe Source Code to the REServe Image:
+4. Copy the Latest REServe Source Code to the REServe Image:
 ```bash
 docker cp REServe reserve:/code
 ```
@@ -89,6 +99,14 @@ docker commit reserve harbor.act.buaa.edu.cn/nvidia/reserve-llm:v20240709
 We provide pre-built REServe image, just pull image from registry:
 ```bash
 docker pull harbor.act.buaa.edu.cn/nvidia/reserve-llm:v20240700
+
+# Update the REServe Source Code
+cd /code/REServe
+cd Initializer
+git pull
+cd ../tensorrtllm_backend
+git submodule update --init --recursive
+git lfs install
 ```
 Or you can use your own REServe image from the previous step.
 
