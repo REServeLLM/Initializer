@@ -1,19 +1,5 @@
 # Setup KServe with Serverless mode on Kubernetes
 
-## Environment
-- Ubuntu: 22.04
-- Kubernetes cluster: v1.26.9
-- containerd: v1.7.2
-- runc: 1.1.12
-- cni: v1.5.1
-- Istio: 1.21.3
-- Knative: v1.12.4
-- KServe: v0.13.0
-- TensorRT-LLM: release v0.10.0
-- Triton Inference Server: release v0.10.0
-- Container Image: nvcr.io/nvidia/tritonserver:24.05-trtllm-python-py3
-- Model: Llama-3-8B-Instruct/Llama-3-70B-Instruct
-
 ## Prerequisite
 - Istio: https://istio.io/latest/docs/setup/install/istioctl/
 ```bash
@@ -27,9 +13,9 @@ istioctl install -y
 WARN: If your cluster do not have `External LB`, you can use `NodePort` instead by changing type: LoadBalancer to type: NodePort in the `istio-ingressgateway` service.
 
 ## Quick Install
-You can install KServe with Serverless mode on Kubernetes by running the `setup.sh` script.
+You can install KServe with Serverless mode on Kubernetes by running the `install.sh` script.
 ```bash
-./setup.sh
+./install.sh
 ```
 
 ## Manual Install

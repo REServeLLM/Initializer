@@ -11,6 +11,7 @@ TRT_LLM_DIR=/code/REServe/tensorrtllm_backend/TensorRT-LLM
 # Run Llama Example
 cd $TRT_LLM_DIR/examples/llama
 
+# TODO: save the built engines to PVC storage
 trtllm-build --checkpoint_dir $OUTPUT_CKP_DIR \
              --remove_input_padding enable \
              --gpt_attention_plugin float16 \
