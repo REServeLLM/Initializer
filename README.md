@@ -45,7 +45,7 @@ Initializer for KServe Cluster with shell scripts and kubernetes YAML files.
 3. (Optional) Build REServe Image with TensorRT-LLM/Backend release v0.10.0, please check [Build REServe Image](#build-reserve-image).
 4. Use REServe Image with TensorRT-LLM/Backend release v0.10.0, please check [Use REServe Image](#use-reserve-image).
 5. Convert Llama-3 huggingface weights to TensorRT weights, and build TensorRT engines, please check [Convert and Build TensorRT-LLM Engines](#convert-and-build-tensorrt-llm-engines).
-6. Deploy Triton Inference Server with TensorRT-LLM engines[Deploy Triton Inference Server](#deploy-triton-inference-server).
+6. Deploy Triton Inference Server with TensorRT-LLM engines, please check [Deploy Triton Inference Server](#deploy-triton-inference-server).
 
 ### Build REServe Image
 <a name="Build REServe Image"></a>
@@ -59,7 +59,7 @@ git lfs install
 git submodule update --init --recursive
 ```
 
-2. Build the TensorRT-LLM Backend Image (contains the TensorRT-LLM and Backend components):
+2. Build the TensorRT-LLM Backend image (contains the TensorRT-LLM and Backend components):
 ```bash
 # Use the Dockerfile to build the backend in a container
 # For Network Issue
@@ -72,7 +72,7 @@ DOCKER_BUILDKIT=1 docker build -t reserve-llm:latest \
                                --progress auto \
                                -f dockerfile/Dockerfile.trt_llm_backend .
 ```
-3. Run the REServe Image:
+3. Run the REServe image:
 ```bash
 docker run -it -d --network=host --runtime=nvidia \
                   --cap-add=SYS_PTRACE --cap-add=SYS_ADMIN \
@@ -84,12 +84,12 @@ docker run -it -d --network=host --runtime=nvidia \
 docker exec -it reserve /bin/bash
 ```
 
-4. Copy the Latest REServe Source Code to the REServe Image:
+4. Copy the latest REServe source code to the REServe image:
 ```bash
 docker cp REServe reserve:/code
 ```
 
-5. Commit and Push the REServe Image to the Registry:
+5. Commit and push the REServe image to the registry:
 ```bash
 docker commit reserve harbor.act.buaa.edu.cn/nvidia/reserve-llm:v20240709
 ```
