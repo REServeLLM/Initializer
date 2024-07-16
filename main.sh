@@ -13,8 +13,6 @@ BASE_DIR=/workspace/engines
 ## HuggingFace model name
 MODEL_NAME=Meta-Llama-3-8B-Instruct
 ## HuggingFace model in PVC storage path
-# PVC_BASE_DIR=/mnt/models/models
-# PVC_CKP_BASE_DIR=/mnt/models/checkpoints
 PVC_OUTPUT_BASE_DIR=/mnt/models/engines
 # Default values for TP and PP
 TP_SIZE=1
@@ -26,7 +24,6 @@ OUTPUT_CKP_DIR="${BASE_CKP_DIR}/${MODEL_NAME}${SUFFIX}"
 PVC_OUTPUT_DIR="${PVC_OUTPUT_BASE_DIR}/${MODEL_NAME}${SUFFIX}"
 OUTPUT_DIR="${BASE_DIR}/${MODEL_NAME}${SUFFIX}"
 
-
 print_usage() {
     echo "Usage: $0 {run|test} [options]"
     echo "Options for run:"
@@ -36,8 +33,6 @@ print_usage() {
     echo "  --input_text               Required. Your input text."
     echo "  --max_output_len           Optional. Maximum output length. Default is 50."
 }
-
-
 
 run_operations() {
     # Update params
@@ -56,12 +51,26 @@ check_and_copy_engines() {
   if [ -d "$PVC_OUTPUT_DIR" ]; then
       echo "Engines already exist, skipping conversion and building."
       echo "Loading engines from PVC storage: ${PVC_OUTPUT_DIR} to ${OUTPUT_DIR}"
+      if [ -d "$OUTPUT_DIR" ]; then
+          # Ensure the target directory exists
+          mkdir -p "$OUTPUT_DIR"
+      else
+          echo "Error: output directory does not exist and could not be created."
+          exit 1
+      fi
       cp -r "${PVC_OUTPUT_DIR}/"* "${OUTPUT_DIR}/"
   else
       echo "Engines not found, proceeding with conversion and building."
       # Call the necessary scripts
       ./TRTLLM/convert_weight.sh --tp "${TP_SIZE}" --pp "${PP_SIZE}"
       ./TRTLLM/build_engine.sh --checkpoint_dir "${OUTPUT_CKP_DIR}" --output_dir "${OUTPUT_DIR}"
+      if [ -d "$PVC_OUTPUT_DIR" ]; then
+          # Ensure the target directory exists
+          mkdir -p "$PVC_OUTPUT_DIR"
+      else
+          echo "Error: PVC output directory does not exist and could not be created."
+          exit 1
+      fi
       cp -r "$OUTPUT_DIR/"* "$PVC_OUTPUT_DIR/"
   fi
 }

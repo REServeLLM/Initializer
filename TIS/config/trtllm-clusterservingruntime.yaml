@@ -9,7 +9,6 @@ spec:
   containers:
   - args:
     - tritonserver
-    - --model-store=/mnt # 容器内模型引擎地址，我可以换
     - --grpc-port=9000
     - --http-port=8080
     - --allow-grpc=true

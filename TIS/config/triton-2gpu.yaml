@@ -15,8 +15,19 @@ spec:
 #      storageUri: pvc://llm-data-pvc/
       volumeMounts:
         - name: llm-data-pvc
-          mountPath: /mnt
+          mountPath: /mnt/models/models   # 如果用/mnt/models会重名，KServe的BUG，暂时我这边不解决
+          subPath: models
           readOnly: false
+        - name: llm-data-pvc
+          mountPath: /mnt/models/checkpoints   # output converted checkpoints
+          subPath: checkpoints
+          readOnly: false
+        - name: llm-data-pvc
+          mountPath: /mnt/models/engines       # output built engines
+          subPath: engines
+          readOnly: false
+        - name: secret-volume
+          mountPath: /etc/secret
       name: kserve-container
       resources:
         limits:
@@ -30,6 +41,6 @@ spec:
         persistentVolumeClaim:
           claimName: llm-data-pvc
           readOnly: false
-#      - name: secret-volume
-#        secret:
-#          secretName: rook-ceph-admin-keyring
+      - name: secret-volume
+        secret:
+          secretName: rook-ceph-admin-keyring

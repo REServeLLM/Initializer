@@ -96,8 +96,15 @@ else
     echo "Directory is not empty. Skipping conversion."
 fi
 
-# Copy container output to PVC
+# Copy container output to PVC with error handling
 echo "Copying converted checkpoints to PVC."
+if [ -d "$PVC_OUTPUT_CKP_DIR" ]; then
+    # Ensure the target directory exists
+    mkdir -p "$PVC_OUTPUT_CKP_DIR"
+else
+    echo "Error: PVC output directory does not exist and could not be created."
+    exit 1
+fi
 cp -r "$OUTPUT_CKP_DIR/"* "$PVC_OUTPUT_CKP_DIR/"
 
 echo "Converting engines completed."

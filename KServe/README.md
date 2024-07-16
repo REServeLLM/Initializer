@@ -38,11 +38,10 @@ kubectl apply -f kserve-setup/net-istio.yaml
 Please following Knative Official Website:
 - https://knative.dev/docs/serving/configuration/config-defaults/
 - https://knative.dev/docs/serving/configuration/feature-flags/
+
 ```bash
-kubectl edit configmap -n knative-serving config-features
-### add under the data:
-  kubernetes.podspec-persistent-volume-claim: "enabled"
-  kubernetes.podspec-persistent-volume-write: "enabled"
+
+kubectl patch configmap config-features -n knative-serving --type merge --patch '{"data": {"kubernetes.podspec-persistent-volume-claim": "enabled", "kubernetes.podspec-persistent-volume-write": "enabled"}}'
 ```
 
 
