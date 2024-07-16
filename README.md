@@ -13,7 +13,9 @@ Initializer for KServe Cluster with shell scripts and kubernetes YAML files.
 ## Project Structure
 - YAML: Contains the YAML files for deploying KServe, Triton Inference Server, and other Kubernetes resources.
 - Shell: Contains the scripts for running the installation and test operation.
-  - main.sh: calling convert_weight.sh, build_engine.sh, deploy_backend.sh, and test_serve.sh
+  - main.sh: main script for running the whole process.
+    - ./main.sh run: convert checkpoints, build engines and deploy Triton Inference Server.
+    - ./main.sh test: test the availability of KServe and Triton Inference Server.
   - KServe/install.sh: installing KServe in Kubernetes.
   - KServe/test_simple.sh: simple testing KServe's availability.
   - TIS/install.sh: installing Triton Inference Server Backend in Kubernetes.

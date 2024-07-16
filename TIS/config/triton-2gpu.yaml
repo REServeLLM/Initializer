@@ -20,4 +20,4 @@ spec:
       command:
         - "/bin/bash"
         - "-c"
-        - "/code/REServe/Initializer/run.sh"
+        - "/code/REServe/Initializer/main.sh run --tp 2"

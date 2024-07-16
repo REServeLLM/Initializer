@@ -1,14 +1,18 @@
 #!/bin/bash
 
+set -e
+
 # Setup ENV
 ## HuggingFace model name
 MODEL_NAME=Meta-Llama-3-8B-Instruct
 ## Converted model checkpoint directory
 CHECKPOINT_DIR=""
 OUTPUT_DIR=""
+PVC_OUTPUT_BASE_DIR=/mnt/models/engines
+PVC_OUTPUT_DIR=""
 
 print_help() {
-    echo "Usage: $0 --checkpoint_dir <path> --output_dir <path>"
+    echo "Usage: $0 --checkpoint_dir <path> --output_dir <path> [--help]"
     echo "Options:"
     echo "  --checkpoint_dir  Required. Directory containing the converted model checkpoint."
     echo "  --output_dir      Required. Directory where the built engines will be saved."
@@ -53,9 +57,15 @@ if [[ -z "$CHECKPOINT_DIR" || -z "$OUTPUT_DIR" ]]; then
     exit 1
 fi
 
-echo "Start building TensorRT-LLM engines for model $MODEL_NAME from $CHECKPOINT_DIR to $OUTPUT_DIR."
+echo "Building with the following parameters:"
+echo "Model name: $MODEL_NAME"
+echo "Checkpoint directory: $CHECKPOINT_DIR"
+echo "Engine output directory: $OUTPUT_DIR"
+echo "Engine PVC output directory: $PVC_OUTPUT_DIR"
 
 # TODO: save the built engines to PVC storage
 trtllm-build --checkpoint_dir $CHECKPOINT_DIR \
              --output_dir $OUTPUT_DIR \
              --gemm_plugin auto
+
+echo "Building engines completed."

@@ -10,7 +10,9 @@ TRT_LLM_DIR=/code/REServe/tensorrtllm_backend/tensorrt_llm/examples/llama
 ## HuggingFace model name
 MODEL_NAME=Meta-Llama-3-8B-Instruct
 ## HuggingFace model in PVC storage path
-MODEL_REPO_DIR=/mnt/models/models/$MODEL_NAME
+PVC_BASE_DIR=/mnt/models/models
+PVC_MODEL_REPO="${PVC_BASE_DIR}/${MODEL_NAME}"
+PVC_CKP_BASE_DIR=/mnt/models/checkpoints
 
 # Default values for TP and PP
 TP_SIZE=1
@@ -19,9 +21,9 @@ PP_SIZE=1
 # Function to print help message
 print_help() {
     echo "Usage: $0 [options]"
-    echo "--tp <size>   Optional. Set the tensor parallel size, default 1"
-    echo "--pp <size>   Optional. Set the pipeline parallel size, default 1"
-    echo "--help        Optional. Show this help message"
+    echo "  --tp <size>   Optional. Set the tensor parallel size, default 1"
+    echo "  --pp <size>   Optional. Set the pipeline parallel size, default 1"
+    echo "  --help        Optional. Show this help message"
 }
 
 # Function to check if a value is a positive integer
@@ -57,15 +59,22 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # Calculate GPU_SIZE
-GPU_SIZE=$(($TP_SIZE * $PP_SIZE))
-
+GPU_SIZE=$((TP_SIZE * PP_SIZE))
+SUFFIX="-${GPU_SIZE}GPU-${TP_SIZE}TP-${PP_SIZE}PP"
 # Construct OUTPUT_CKP_DIR
-OUTPUT_CKP_DIR="${BASE_CKP_DIR}/${MODEL_NAME}-${GPU_SIZE}GPU-${TP_SIZE}TP-${PP_SIZE}PP"
+OUTPUT_CKP_DIR="${BASE_CKP_DIR}/${MODEL_NAME}${SUFFIX}"
+PVC_OUTPUT_CKP_DIR="${PVC_CKP_BASE_DIR}/${MODEL_NAME}${SUFFIX}"
 
-echo "Start converting huggingface checkpoints for model $MODEL_NAME to $OUTPUT_CKP_DIR with TP=$TP_SIZE and PP=$PP_SIZE."
+echo "Converting with the following parameters:"
+echo "Model name: $MODEL_NAME"
+echo "Model repository: $PVC_MODEL_REPO"
+echo "Checkpoint output directory: $OUTPUT_CKP_DIR"
+echo "Checkpoint pvc output directory: $PVC_OUTPUT_CKP_DIR"
+echo "Tensor parallel size: $TP_SIZE"
+echo "Pipeline parallel size: $PP_SIZE"
 
 # Construct the command dynamically
-CMD="python3 convert_checkpoint.py --model_dir $MODEL_REPO_DIR --output_dir $OUTPUT_CKP_DIR --dtype float16"
+CMD="python3 convert_checkpoint.py --model_dir $PVC_MODEL_REPO --output_dir $OUTPUT_CKP_DIR --dtype float16"
 
 if [ "$TP_SIZE" -ne 1 ]; then
     CMD+=" --tp_size $TP_SIZE"
@@ -75,9 +84,15 @@ if [ "$PP_SIZE" -ne 1 ]; then
     CMD+=" --pp_size $PP_SIZE"
 fi
 
+echo "Calling command: $CMD"
+
 # Run Llama Example
 cd $TRT_LLM_DIR
 
 # Execute the dynamically constructed command
-echo "Execute command: $CMD"
 eval $CMD
+
+# Copy container output to PVC
+cp -r "$OUTPUT_CKP_DIR/"* "$PVC_OUTPUT_CKP_DIR/"
+
+echo "Converting engines completed."
