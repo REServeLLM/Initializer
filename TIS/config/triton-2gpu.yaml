@@ -12,7 +12,11 @@ spec:
         name: triton
         version: "2"
       runtime: triton-trtllm
-      storageUri: pvc://llm-data-pvc/
+#      storageUri: pvc://llm-data-pvc/
+      volumeMounts:
+        - name: llm-data-pvc
+          mountPath: /mnt
+          readOnly: false
       name: kserve-container
       resources:
         limits:
@@ -21,3 +25,11 @@ spec:
         - "/bin/bash"
         - "-c"
         - "/code/REServe/Initializer/main.sh run --tp 2"
+    volumes:
+      - name: llm-data-pvc
+        persistentVolumeClaim:
+          claimName: llm-data-pvc
+          readOnly: false
+#      - name: secret-volume
+#        secret:
+#          secretName: rook-ceph-admin-keyring

@@ -84,15 +84,20 @@ if [ "$PP_SIZE" -ne 1 ]; then
     CMD+=" --pp_size $PP_SIZE"
 fi
 
-echo "Calling command: $CMD"
-
-# Run Llama Example
-cd $TRT_LLM_DIR
-
-# Execute the dynamically constructed command
-eval $CMD
+# Before calling CMD, check if OUTPUT_CKP_DIR is an empty directory
+if [ -d "$OUTPUT_CKP_DIR" ] && [ -z "$(ls -A $OUTPUT_CKP_DIR)" ]; then
+    echo "Directory is empty. Proceeding with conversion."
+    # Execute the dynamically constructed command
+    # Run Llama Example
+    cd $TRT_LLM_DIR
+    echo "Calling command: $CMD"
+    eval $CMD
+else
+    echo "Directory is not empty. Skipping conversion."
+fi
 
 # Copy container output to PVC
+echo "Copying converted checkpoints to PVC."
 cp -r "$OUTPUT_CKP_DIR/"* "$PVC_OUTPUT_CKP_DIR/"
 
 echo "Converting engines completed."

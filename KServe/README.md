@@ -34,6 +34,18 @@ kubectl apply -f kserve-setup/serving-core.yaml -n knative-serving
 kubectl apply -f kserve-setup/net-istio.yaml
 ```
 
+#### Edit Knative Serving ConfigMap
+Please following Knative Official Website:
+- https://knative.dev/docs/serving/configuration/config-defaults/
+- https://knative.dev/docs/serving/configuration/feature-flags/
+```bash
+kubectl edit configmap -n knative-serving config-features
+### add under the data:
+  kubernetes.podspec-persistent-volume-claim: "enabled"
+  kubernetes.podspec-persistent-volume-write: "enabled"
+```
+
+
 #### Install Cert Manager
 ```bash
 kubectl apply -f kserve-setup/cert-manager.yaml
