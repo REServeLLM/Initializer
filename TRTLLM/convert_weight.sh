@@ -85,7 +85,7 @@ if [ "$PP_SIZE" -ne 1 ]; then
 fi
 
 # Before calling CMD, check if OUTPUT_CKP_DIR is an empty directory
-if [ -d "$OUTPUT_CKP_DIR" ] && [ -z "$(ls -A $OUTPUT_CKP_DIR)" ]; then
+if [ -d "$OUTPUT_CKP_DIR" ] || [ -z "$(ls -A $OUTPUT_CKP_DIR)" ]; then
     echo "Directory is empty. Proceeding with conversion."
     # Execute the dynamically constructed command
     # Run Llama Example

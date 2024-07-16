@@ -4,15 +4,12 @@ set -e
 
 # Get the directory of the current script
 SCRIPT_DIR=$(dirname "$0")
-echo $SCRIPT_DIR
 # Change the working directory to the script's directory
 cd "$SCRIPT_DIR"
 
 ## Output path
 BASE_CKP_DIR=/workspace/checkpoints
 BASE_DIR=/workspace/engines
-## Source code path
-TRT_LLM_DIR=/code/REServe/tensorrtllm_backend/tensorrt_llm/examples/llama
 ## HuggingFace model name
 MODEL_NAME=Meta-Llama-3-8B-Instruct
 ## HuggingFace model in PVC storage path
