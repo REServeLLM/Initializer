@@ -116,7 +116,7 @@ check_or_build_engines() {
 }
 
 run_triton_server() {
-  echo "Run triton server with engines: ${OUTPUT_DIR}"
+  echo "Start triton server with engines: ${OUTPUT_DIR}"
   ./TIS/run.sh --output_dir "${OUTPUT_DIR}" --world_size ${GPU_SIZE} --triton_max_batch_size ${MAX_BATCH_SIZE}
 }
 

@@ -55,6 +55,11 @@ python3 $TIS_DIR/tools/fill_template.py -i ${TRITON_MODEL_REPO}/tensorrt_llm_bls
 python3 $TIS_DIR/tools/fill_template.py -i ${TRITON_MODEL_REPO}/ensemble/config.pbtxt triton_max_batch_size:"${TRITON_MAX_BATCH_SIZE}"
 python3 $TIS_DIR/tools/fill_template.py -i ${TRITON_MODEL_REPO}/tensorrt_llm/config.pbtxt triton_backend:tensorrtllm,triton_max_batch_size:"${TRITON_MAX_BATCH_SIZE}",decoupled_mode:False,max_beam_width:1,engine_dir:"${OUTPUT_DIR}",max_tokens_in_paged_kv_cache:1280,max_attention_window_size:1280,kv_cache_free_gpu_mem_fraction:0.5,exclude_input_in_output:True,enable_kv_cache_reuse:False,batching_strategy:inflight_fused_batching,max_queue_delay_microseconds:0
 
+echo ""
+echo "Launch Triton Server..."
+echo "Word size: ${WORLD_SIZE}"
+echo "Maximum batch size: ${TRITON_MAX_BATCH_SIZE}"
+
 # Launch Triton Server
 # pip install SentencePiece  # already installed
 python3 $TIS_DIR/scripts/launch_triton_server.py --world_size "${WORLD_SIZE}" --model_repo=${TRITON_MODEL_REPO} --http_port=8080 --grpc_port=9000 --metrics_port=8002
