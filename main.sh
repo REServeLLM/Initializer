@@ -21,6 +21,9 @@ PP_SIZE=1
 GPU_SIZE=1
 SUFFIX="-${GPU_SIZE}GPU-${TP_SIZE}TP-${PP_SIZE}PP"
 
+# Maximum batch size for building engines and launching triton server
+MAX_BATCH_SIZE=64
+
 PVC_OUTPUT_CKP_DIR="${PVC_OUTPUT_CKP_BASE_DIR}/${MODEL_NAME}${SUFFIX}"
 OUTPUT_CKP_DIR="${BASE_CKP_DIR}/${MODEL_NAME}${SUFFIX}"
 
@@ -56,7 +59,7 @@ run_operations() {
     PVC_OUTPUT_DIR="${PVC_OUTPUT_BASE_DIR}/${MODEL_NAME}${SUFFIX}"
     OUTPUT_DIR="${BASE_DIR}/${MODEL_NAME}${SUFFIX}"
     check_or_build_engines
-    # TODO: call ./TIS/run.sh
+    run_triton_server
 }
 
 check_or_build_engines() {
@@ -87,7 +90,7 @@ check_or_build_engines() {
               cp -r "${OUTPUT_CKP_DIR}/"* "${PVC_OUTPUT_CKP_DIR}"
           fi
           echo "Build engines to container local engines"
-          ./TRTLLM/build_engine.sh --checkpoint_dir "${OUTPUT_CKP_DIR}" --output_dir "${OUTPUT_DIR}"
+          ./TRTLLM/build_engine.sh --checkpoint_dir "${OUTPUT_CKP_DIR}" --output_dir "${OUTPUT_DIR}" --max_batch_size "${MAX_BATCH_SIZE}"
           echo "Save engines to PVC engines: ${PVC_OUTPUT_DIR}"
           mkdir -p "${PVC_OUTPUT_DIR}"
           cp -r "${OUTPUT_DIR}/"* "${PVC_OUTPUT_DIR}"
@@ -108,6 +111,11 @@ check_or_build_engines() {
           echo "PVC engines found, everything is good"
       fi
   fi
+}
+
+run_triton_server() {
+  echo "Run triton server with engines: {OUTPUT_DIR}"
+  ./TIS/run.sh --output_dir "${OUTPUT_DIR}" --world_size ${GPU_SIZE} --triton_max_batch_size ${MAX_BATCH_SIZE}
 }
 
 test_inference() {
