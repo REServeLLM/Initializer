@@ -54,10 +54,12 @@ run_operations() {
     GPU_SIZE=$((TP_SIZE * PP_SIZE))
     SUFFIX="-${GPU_SIZE}GPU-${TP_SIZE}TP-${PP_SIZE}PP"
 
+    PVC_OUTPUT_CKP_DIR="${PVC_OUTPUT_CKP_BASE_DIR}/${MODEL_NAME}${SUFFIX}"
     OUTPUT_CKP_DIR="${BASE_CKP_DIR}/${MODEL_NAME}${SUFFIX}"
 
     PVC_OUTPUT_DIR="${PVC_OUTPUT_BASE_DIR}/${MODEL_NAME}${SUFFIX}"
     OUTPUT_DIR="${BASE_DIR}/${MODEL_NAME}${SUFFIX}"
+
     check_or_build_engines
     run_triton_server
 }

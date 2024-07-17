@@ -63,13 +63,11 @@ GPU_SIZE=$((TP_SIZE * PP_SIZE))
 SUFFIX="-${GPU_SIZE}GPU-${TP_SIZE}TP-${PP_SIZE}PP"
 # Construct OUTPUT_CKP_DIR
 OUTPUT_CKP_DIR="${BASE_CKP_DIR}/${MODEL_NAME}${SUFFIX}"
-PVC_OUTPUT_CKP_DIR="${PVC_CKP_BASE_DIR}/${MODEL_NAME}${SUFFIX}"
 
 echo "Converting with the following parameters:"
 echo "Model name: $MODEL_NAME"
 echo "Model repository: $PVC_MODEL_REPO"
 echo "Checkpoint output directory: $OUTPUT_CKP_DIR"
-echo "Checkpoint pvc output directory: $PVC_OUTPUT_CKP_DIR"
 echo "Tensor parallel size: $TP_SIZE"
 echo "Pipeline parallel size: $PP_SIZE"
 

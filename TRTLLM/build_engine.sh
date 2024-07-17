@@ -8,7 +8,6 @@ MODEL_NAME=Meta-Llama-3-8B-Instruct
 ## Converted model checkpoint directory
 CHECKPOINT_DIR=""
 OUTPUT_DIR=""
-PVC_OUTPUT_DIR=""
 MAX_BATCH_SIZE=64
 
 print_help() {
@@ -70,7 +69,7 @@ echo "Building with the following parameters:"
 echo "Model name: $MODEL_NAME"
 echo "Checkpoint directory: $CHECKPOINT_DIR"
 echo "Engine output directory: $OUTPUT_DIR"
-echo "Engine PVC output directory: $PVC_OUTPUT_DIR"
+echo "Maximum batch size: $MAX_BATCH_SIZE"
 
 # Please refer to:
 # tensorrt_llm/plugin/plugin.py
