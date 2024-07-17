@@ -57,9 +57,13 @@ python3 $TIS_DIR/tools/fill_template.py -i ${TRITON_MODEL_REPO}/tensorrt_llm/con
 
 echo ""
 echo "Launch Triton Server..."
-echo "Word size: ${WORLD_SIZE}"
+echo "World size: ${WORLD_SIZE}"
 echo "Maximum batch size: ${TRITON_MAX_BATCH_SIZE}"
 
 # Launch Triton Server
 # pip install SentencePiece  # already installed
-python3 $TIS_DIR/scripts/launch_triton_server.py --world_size "${WORLD_SIZE}" --model_repo=${TRITON_MODEL_REPO} --http_port=8080 --grpc_port=9000 --metrics_port=8002
+CMD="python3 ${TIS_DIR}/scripts/launch_triton_server.py --world_size ${WORLD_SIZE} --model_repo=${TRITON_MODEL_REPO} --http_port=8080 --grpc_port=9000 --metrics_port=8002"
+echo "Call command: $CMD"
+
+eval $CMD
+
