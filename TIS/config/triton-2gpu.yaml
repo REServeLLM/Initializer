@@ -36,7 +36,7 @@ spec:
         - "/bin/bash"
         - "-c"
         - "/code/REServe/Initializer/main.sh run --tp 2"
-      #  - "git -C /code/REServe/Initializer pull && /code/REServe/Initializer/main.sh run --tp 2"
+      #  - "git -C /code/REServe/Initializer pull && /code/REServe/Initializer/main.sh run --tp 2 && while true; do sleep 1000; done"
     volumes:
       - name: llm-data-pvc
         persistentVolumeClaim:

@@ -67,3 +67,6 @@ echo "Call command: $CMD"
 
 eval $CMD
 
+# keep the container running
+tail -f /dev/null
+
