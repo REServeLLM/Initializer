@@ -8,7 +8,6 @@ MODEL_NAME=Meta-Llama-3-8B-Instruct
 ## Converted model checkpoint directory
 CHECKPOINT_DIR=""
 OUTPUT_DIR=""
-PVC_OUTPUT_BASE_DIR=/mnt/models/engines
 PVC_OUTPUT_DIR=""
 
 print_help() {
@@ -66,6 +65,6 @@ echo "Engine PVC output directory: $PVC_OUTPUT_DIR"
 # TODO: save the built engines to PVC storage
 trtllm-build --checkpoint_dir $CHECKPOINT_DIR \
              --output_dir $OUTPUT_DIR \
-             --gemm_plugin auto
+             --gemm_plugin float16
 
 echo "Building engines completed."
