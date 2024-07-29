@@ -11,8 +11,8 @@ echo $INGRESS_HOST
 echo $INGRESS_PORT
 echo $SERVICE_HOSTNAME
 
-# Test in container
-curl "http://localhost:8080/v2/models/ensemble/generate" -d '{"text_input": "What is machine learning?", "max_tokens": 20, "bad_words": "", "stop_words": "", "pad_id": 2, "end_id": 2}'
+# Test in container or local server
+# curl "http://localhost:8080/v2/models/ensemble/generate" -d '{"text_input": "What is machine learning?", "max_tokens": 20, "bad_words": "", "stop_words": "", "pad_id": 2, "end_id": 2}'
 
 # Test in cluster
 curl -H "Host: ${SERVICE_HOSTNAME}" "http://${INGRESS_HOST}:${INGRESS_PORT}/v2/models/ensemble/generate" -d '{"text_input": "What is machine learning?", "max_tokens": 20, "bad_words": "", "stop_words": "", "pad_id": 2, "end_id": 2}'

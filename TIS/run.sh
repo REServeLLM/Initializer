@@ -62,7 +62,7 @@ echo "Maximum batch size: ${TRITON_MAX_BATCH_SIZE}"
 
 # Launch Triton Server
 # pip install SentencePiece  # already installed
-CMD="python3 ${TIS_DIR}/scripts/launch_triton_server.py --world_size ${WORLD_SIZE} --model_repo=${TRITON_MODEL_REPO} --http_port=8080 --grpc_port=9000 --metrics_port=8002"
+CMD="python3 ${TIS_DIR}/scripts/launch_triton_server.py --world_size ${WORLD_SIZE} --model_repo=${TRITON_MODEL_REPO} --http_port=8080 --grpc_port=8081 --metrics_port=8082 --log --log-file /code/triton_log.txt"
 echo "Call command: $CMD"
 
 eval $CMD
